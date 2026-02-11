@@ -134,9 +134,9 @@
                             <td>GRADE & SECTION: </td>
                         </tr>
                         <tr>
-                            <td><input type="number" name="lrn" required> </td>
+                            <td><input type="number" name="lrn" oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);" required autocomplete="off"> </td>
                             <td>
-                                <input type="text" name="grade_section" placeholder="e.g., Grade 7 - A" required>
+                                <input type="text" name="grade_section" placeholder="e.g., Grade 7 - A" required autocomplete="off">
                             </td>
                         </tr>
                         <tr>
@@ -144,24 +144,24 @@
                             <td>ADDRESS: </td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="first_name" required> </td>
-                            <td><input type="text" name="address" required> </td>
+                            <td><input type="text" name="first_name" required autocomplete="off"> </td>
+                            <td><input type="text" name="address" required autocomplete="off"> </td>
                         </tr>
                         <tr>
                             <td>MIDDLE NAME: </td>
                             <td>CONTACT NO.: </td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="middle_name"> </td>
-                            <td><input type="number" name="contact_no" oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);" required> </td>
+                            <td><input type="text" name="middle_name" autocomplete="off"> </td>
+                            <td><input type="number" name="contact_no" oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);" required autocomplete="off"> </td>
                         </tr>
                         <tr>
                             <td>LAST NAME: </td>
                             <td>EMAIL: </td>
                         </tr>
                         <tr>
-                            <td><input type="text" name="last_name" required> </td>
-                            <td><input type="email" name="email" required> </td>
+                            <td><input type="text" name="last_name" required autocomplete="off"> </td>
+                            <td><input type="email" name="email" required autocomplete="off"> </td>
                         </tr>
                         <tr>
                             <td>PROFILE PICTURE: </td>
@@ -169,7 +169,7 @@
                         </tr>
                         <tr>
                             <td><input type="file" name="profile_picture"> </td>
-                            <td><input type="date" name="birth_date" id="birth" required> </td>
+                            <td><input type="date" name="birth_date" id="birth" required autocomplete="off"> </td>
                         </tr>
                         <tr>
                             <td>GENDER: </td>
