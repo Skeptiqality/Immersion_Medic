@@ -128,8 +128,6 @@
             border-bottom: 2px solid #000;
         }
 
-        #table-button {}
-
         td img {
             border-radius: 50%;
             object-fit: cover;
