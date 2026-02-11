@@ -22,7 +22,7 @@ $user = mysqli_fetch_assoc($result);
     .sidebar {
       position: relative;
       top: 0px;
-      height: 100%;
+      height: 103%;
       width: 240px;
       background: rgb(10, 89, 52);
       padding: 16px;
@@ -42,6 +42,7 @@ $user = mysqli_fetch_assoc($result);
       align-items: center;
       justify-content: space-between;
       margin-bottom: 18px;
+      margin-top: 15px;
       margin-left: 2.5px;
     }
 
@@ -161,18 +162,25 @@ $user = mysqli_fetch_assoc($result);
       text-decoration: none;
       color: white;
     }
+
+    .logo-text{
+      margin-right: 25px;
+      font-size: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 
 <body>
 
   <div class="sidebar collapsed" id="sidebar">
+    <ul class="menu">
 
     <div class="sidebar-header">
       <div class="logo"><img src="../include/Lagro_High_School_logo.png" alt=""></div>
+      <span><a class="logo-text">Lagro Clinic</a></span>
     </div>
 
-    <ul class="menu">
       <button class="toggle-btn" id="arrow" onclick="toggleSidebar()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
         </svg></button>

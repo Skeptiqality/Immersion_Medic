@@ -16,6 +16,15 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: green;
+            --secondary-color: blue;
+            --font-color: white;
+            --gradient-color: linear-gradient(90deg, rgb(10, 89, 52) 50%, rgb(55, 123, 77) 100%);
+            --input-color: #f1f1f1;
+            --shadow: 0 2px 5px rgba(0, 0, 0, 0.4)
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -34,11 +43,11 @@
             display: grid;
             grid-template-columns: minmax(250px, 2fr);
             gap: 50px;
-            border: 2px solid black;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
             border-radius: 16px;
             width: 70%;
             margin: auto;
-            padding: 40px;
+            padding: 10px;
             background-color: white;
             margin-top: 20px;
 
@@ -58,19 +67,22 @@
 
         td,
         th {
-            padding: 3px 10px;
+            padding: 7px 10px 7px 10px;
             font-weight: bold;
         }
 
         input[type="text"],
         input[type="number"],
         input[type="email"],
+        input[type="file"],
         input[type="date"],
         select {
             width: 100%;
+            height: 35px;
             padding: 3px;
             box-sizing: border-box;
             border-radius: 8px;
+            border: none;
             background-color: var(--input-color);
             box-shadow: var(--shadow);
         }
@@ -89,6 +101,7 @@
             padding: 3px;
             box-sizing: border-box;
             border-radius: 8px;
+            border:none;
             resize: vertical;
             background-color: var(--input-color);
             box-shadow: var(--shadow);
@@ -96,18 +109,39 @@
 
         .register-label {
             text-align: center;
-            margin-bottom: 12px;
             position: relative;
             background: var(--gradient-color);
             color: var(--font-color);
-            height: 40px;
+            font-weight: bold;
+            padding: 10px;
+            height: 60px;
             line-height: 40px;
+            margin: -30px;
+            margin-bottom: 30px;
             border-radius: 10px 10px 0px 0px;
+            box-shadow: 0px 5px 3px 0px rgba(0, 0, 0, 0.2);
         }
 
         #home::after {
             width: 100%;
         }
+
+        #clearBtn {
+            background-color: rgb(161, 59, 60);
+            border-color: rgb(161, 59, 60);
+        }
+
+        #clearBtn:hover {
+            background-color: rgb(126, 43, 45);
+            border-color: rgb(126, 43, 45);
+        }
+
+        .btn{
+            float: right;
+            margin: 5px 6px 15px 6px;
+            width: 10rem;
+        }
+
     </style>
 </head>
 
@@ -240,12 +274,11 @@
                     </table>
                 </div>
                 <button type="submit" class="btn btn-success">Submit</button>
+                <button type="reset" class="btn btn-success" id="clearBtn">Clear</button>
             </form>
         </main>
     </div>
 
-
-    <?php include '../include/footer.php'; ?>
 
     <script>
         const birthInput = document.getElementById('birth');
