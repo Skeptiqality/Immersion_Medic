@@ -137,7 +137,8 @@
       border: none;
     }
 
-    #medical-history {
+    #medical-history,
+    #allergies {
       field-sizing: content;
       width: 100%;
       overflow-y: auto;
@@ -348,47 +349,51 @@
             <p class="info-label">MEDICAL HISTORY</p>
             <textarea name="medical-history" id="medical-history" class="" readonly></textarea>
           </div>
+          <div class="info-container">
+            <p class="info-label">ALLERGIES</p>
+            <textarea name="allergies" id="allergies" class="" readonly></textarea>
+          </div>
         </div>
       </div>
 
-      <div class="container-grid" id="">
+    <div class="container-grid" id="">
 
-        <div id="div1">
-          <form id="anecdotalForm">
-            <p class="form-label">Anecdotal Records</p>
-            <textarea name="anecdotal-text" id="anecdotal-text" class="input-form" placeholder="Enter anecdotal record..."></textarea>
-            <div class="btn">
-              <button type="button" class="btn btn-success" onclick="saveAnecdotalRecord()">Save</button>
-              <button type="reset" class="btn btn-danger">Clear</button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Behavioral Notes Todo List -->
-        <div id="div2">
-          <div class="todo-container">
-            <p class="todo-title">Behavioral Notes</p>
-            <div class="todo-input-group">
-              <input type="text" id="behavioralInput" placeholder="Add note...">
-              <button type="button" onclick="addBehavioralNote()" class="btn btn-success">Add</button>
-            </div>
-            <ul class="todo-list" id="behavioralList"></ul>
+      <div id="div1">
+        <form id="anecdotalForm">
+          <p class="form-label">Anecdotal Records</p>
+          <textarea name="anecdotal-text" id="anecdotal-text" class="input-form" placeholder="Enter anecdotal record..."></textarea>
+          <div class="btn">
+            <button type="button" class="btn btn-success" onclick="saveAnecdotalRecord()">Save</button>
+            <button type="reset" class="btn btn-danger">Clear</button>
           </div>
-        </div>
-
-        <!-- Medications Todo List -->
-        <div id="div3">
-          <div class="todo-container">
-            <p class="todo-title">Medications</p>
-            <div class="todo-input-group">
-              <input type="text" id="medicationInput" placeholder="Add medication...">
-              <button type="button" onclick="addMedication()" class="btn btn-success">Add</button>
-            </div>
-            <ul class="todo-list" id="medicationList"></ul>
-          </div>
-        </div>
-
+        </form>
       </div>
+
+      <!-- Behavioral Notes Todo List -->
+      <div id="div2">
+        <div class="todo-container">
+          <p class="todo-title">Behavioral Notes</p>
+          <div class="todo-input-group">
+            <input type="text" id="behavioralInput" placeholder="Add note...">
+            <button type="button" onclick="addBehavioralNote()" class="btn btn-success">Add</button>
+          </div>
+          <ul class="todo-list" id="behavioralList"></ul>
+        </div>
+      </div>
+
+      <!-- Medications Todo List -->
+      <div id="div3">
+        <div class="todo-container">
+          <p class="todo-title">Medications</p>
+          <div class="todo-input-group">
+            <input type="text" id="medicationInput" placeholder="Add medication...">
+            <button type="button" onclick="addMedication()" class="btn btn-success">Add</button>
+          </div>
+          <ul class="todo-list" id="medicationList"></ul>
+        </div>
+      </div>
+
+    </div>
 
     </div>
   </main>
@@ -447,7 +452,6 @@
       });
     }
 
-    // Filter and display students based on search input
     function filterStudents(searchText) {
       const dropdown = document.getElementById('searchResults');
       dropdown.innerHTML = '';
@@ -457,7 +461,6 @@
         return;
       }
 
-      // Only show dropdown when last name letter is typed (minimum 3 characters)
       if (searchText.trim().length < 3) {
         dropdown.style.display = 'none';
         return;
@@ -484,7 +487,6 @@
       dropdown.style.display = 'block';
     }
 
-    // Select a student from search results
     function selectStudent(student) {
       currentUserId = student.user_id;
       document.getElementById('student-search').value = `${student.first_name} ${student.middle_name} ${student.last_name}`;
@@ -492,14 +494,12 @@
       loadStudentData();
     }
 
-    // Load student data
     function loadStudentData() {
       if (!currentUserId) {
         clearAllFields();
         return;
       }
 
-      // Fetch student info
       fetch(`../process/api.php?action=get_student_info&user_id=${currentUserId}`)
         .then(response => response.json())
         .then(data => {
@@ -510,6 +510,7 @@
             document.getElementById('age').value = student.age;
             document.getElementById('gender').value = student.gender;
             document.getElementById('medical-history').value = student.med_condition;
+            document.getElementById('allergies').value = student.allergies;
           }
         })
         .catch(error => console.error('Error:', error));

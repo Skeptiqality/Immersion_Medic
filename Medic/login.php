@@ -169,7 +169,6 @@ if (isset($_POST["login"])) {
                     <img src="Pics/Logos/Lagro_High_School_logo.png" alt="LHS">
                 </div>
                 <h1>Lagro High School</h1>
-                <h3>Log-in</h3>
             </div>
 
             <div class="form-container">
@@ -185,9 +184,6 @@ if (isset($_POST["login"])) {
                     </div>
                     <button type="submit" class="submit-btn" name="login">Log-in</button>
 
-                    <div class="reg">
-                        <p class="reg-msg">Don't have an account? <a href="register.php">Register</a></p>
-                    </div>
                 </form>
             </div>
         </section>

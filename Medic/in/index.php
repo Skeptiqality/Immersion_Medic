@@ -118,7 +118,6 @@
             line-height: 40px;
             margin: -30px;
             margin-bottom: 30px;
-            border-radius: 10px 10px 0px 0px;
             box-shadow: 0px 5px 3px 0px rgba(0, 0, 0, 0.2);
         }
 
@@ -313,6 +312,8 @@
             });
         }
     </script>
+
+    <?php include '../include/footer.php'; ?>
 </body>
 
 </html>
