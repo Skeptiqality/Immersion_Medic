@@ -282,100 +282,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_report'])) {
 
     <script>
         const keywordTriggers = {
-            bully: {
-                keywords: ['bully', 'bullying', 'bullied', 'bully me', 'being bullied', 'mean kids', 'picking on me'],
-                responses: [
-                    "I'm sorry to hear that you're experiencing bullying. That's never okay, and you don't have to go through this alone.",
-                    "Bullying can be really hurtful. I want you to know that what you're experiencing is not your fault.",
-                    "Dealing with a bully can be tough. You deserve to feel safe and respected.",
-                    "Being bullied is painful, but help is available. Would you like to report this and get support?"
-                ]
-            },
-            hurt: {
-                keywords: ['hurt', 'hurting', 'pain', 'painful', 'injured', 'injury', 'ache', 'sore', 'bleeding'],
-                responses: [
-                    "I'm concerned to hear that you're hurting. Your well-being is important to us.",
-                    "It sounds like you're in pain. Please consider reaching out to a trusted adult or professional.",
-                    "I'm here to help. If you're physically hurt, please seek medical attention immediately.",
-                    "Your health matters. If you need immediate help, please contact a school nurse or call emergency services."
-                ]
-            },
-            suicide: {
-                keywords: ['suicide', 'suicidal', 'kill myself', 'end it', 'don\'t want to live', 'rather be dead', 'wish i was dead', 'no point living'],
-                responses: [
-                    "I'm really concerned about what you're sharing. Your life matters, and there are people who care about you.",
-                    "Thoughts of suicide are serious and treatable. Please reach out to a crisis helpline or trusted adult immediately.",
-                    "You're not alone in these feelings, and help is available. Please contact a counselor or crisis service right away.",
-                    "Crisis support is available 24/7. Please reach out to the 988 Suicide & Crisis Lifeline - you don't have to face this alone."
-                ]
-            },
-            abuse: {
-                keywords: ['abuse', 'abused', 'abusive', 'hitting', 'assault', 'violence', 'beat', 'hit me', 'touched me'],
-                responses: [
-                    "I'm very concerned about your safety. Abuse is never acceptable, and you deserve protection.",
-                    "What you're describing is serious. Please reach out to a trusted adult, counselor, or call the support helpline.",
-                    "Your safety is our priority. Please don't hesitate to report this to school administration or authorities.",
-                    "You're not alone, and this is not your fault. I'm here to help you get the support you need."
-                ]
-            },
-            lonely: {
-                keywords: ['lonely', 'alone', 'isolated', 'no friends', 'feel alone', 'nobody likes me', 'left out', 'excluded'],
-                responses: [
-                    "Feeling lonely can be really difficult. There are people here who care about you and want to help.",
-                    "You're not alone in feeling this way. Many students experience loneliness, and support is available.",
-                    "Let's work together to find ways to connect you with others and resources that can help.",
-                    "Your feelings are valid. Building connections takes time, but there are people and resources ready to help."
-                ]
-            },
-            harassment: {
-                keywords: ['harass', 'harassment', 'harassed', 'sexual harassment', 'unwanted', 'uncomfortable'],
-                responses: [
-                    "I'm sorry you're experiencing harassment. This is unacceptable, and you don't deserve to be treated this way.",
-                    "Harassment of any kind is serious. Your feelings are valid, and you have the right to feel safe.",
-                    "This situation is important, and we want to help. Would you like to report what's happening?"
-                ]
-            },
-            discrimination: {
-                keywords: ['discrimination', 'discriminated', 'racist', 'homophobic', 'sexist', 'treated unfairly'],
-                responses: [
-                    "Discrimination is never acceptable. Your identity and who you are matters.",
-                    "I'm sorry you're facing discrimination. You deserve to be respected and treated fairly.",
-                    "What you're experiencing is wrong. Let's get you the support and help you deserve."
-                ]
-            },
-            stress: {
-                keywords: ['stressed', 'stress', 'anxiety', 'anxious', 'worried', 'panic', 'nervous', 'overwhelmed'],
-                responses: [
-                    "It's okay to feel stressed or anxious. Many people experience this, and there are ways to manage it.",
-                    "Your feelings are valid. Talking to someone can really help when things feel overwhelming.",
-                    "I'm here to listen. Would you like to share more about what's making you feel this way?"
-                ]
-            },
-            depression: {
-                keywords: ['depressed', 'depression', 'sad', 'unhappy', 'down', 'empty', 'hopeless', 'worthless'],
-                responses: [
-                    "I'm sorry you're feeling this way. Depression is real, but it's also treatable with proper support.",
-                    "Your feelings matter, and you deserve help. Please reach out to a counselor or trusted adult.",
-                    "What you're experiencing is important. Getting support is a sign of strength, not weakness."
-                ]
-            },
-            selfharm: {
-                keywords: ['self harm', 'cutting', 'hurt myself', 'scratch myself', 'harm', 'scars'],
-                responses: [
-                    "I'm concerned about your safety. Self-harm is a sign that you're struggling, and help is available.",
-                    "You deserve support and healthier ways to cope with your pain. Please talk to a counselor.",
-                    "What you're doing is a way of processing pain, but there are better options. Let's get you help."
-                ]
-            },
-            substance: {
-                keywords: ['drugs', 'alcohol', 'drinking', 'smoking', 'vaping', 'substance', 'high', 'weed'],
-                responses: [
-                    "I appreciate you sharing this. Substance use concerns are important, and support is available.",
-                    "Whether you're struggling with use or worried about someone else, counselors can help.",
-                    "Reaching out shows courage. Let's connect you with resources that can truly help."
-                ]
-            }
-        };
+    homework: {
+        keywords: ['homework', 'assignment', 'project', 'due date', 'submit', 'late work'],
+        responses: [
+            "Need help with homework? I can guide you through it step by step.",
+            "If you're unsure about an assignment, try checking your class portal or asking your teacher for clarification.",
+            "Managing homework can be easier with a schedule. Would you like help organizing your tasks?"
+        ]
+    },
+
+    exams: {
+        keywords: ['exam', 'test', 'quiz', 'midterm', 'final', 'study'],
+        responses: [
+            "Preparing for an exam? I can help you create a study plan.",
+            "Reviewing notes and practicing sample questions can boost your confidence.",
+            "Would you like tips on how to study more effectively?"
+        ]
+    },
+
+    grades: {
+        keywords: ['grade', 'grades', 'report card', 'marks', 'gpa', 'score'],
+        responses: [
+            "If you're concerned about your grades, talking to your teacher is a great first step.",
+            "Improving grades takes time and effort. I can help you make a plan.",
+            "Would you like tips on how to raise your GPA?"
+        ]
+    },
+
+    attendance: {
+        keywords: ['absent', 'attendance', 'missed class', 'sick day', 'late to school'],
+        responses: [
+            "If you missed a class, check with your teacher about make-up work.",
+            "Good attendance helps you stay on track. Let me know if you need help catching up.",
+            "Would you like guidance on writing an absence excuse note?"
+        ]
+    },
+
+    schedule: {
+        keywords: ['schedule', 'timetable', 'class time', 'period', 'room number'],
+        responses: [
+            "You can find your class schedule in the student portal.",
+            "Need help organizing your timetable? I can help you plan your day.",
+            "If you're unsure about a room number or class time, check with the front office."
+        ]
+    },
+
+    clubs: {
+        keywords: ['club', 'sports', 'activity', 'extracurricular', 'team'],
+        responses: [
+            "Joining a club is a great way to meet new people and build skills.",
+            "You can check the school website for a list of extracurricular activities.",
+            "Would you like help choosing a club that matches your interests?"
+        ]
+    },
+
+    cafeteria: {
+        keywords: ['lunch', 'cafeteria', 'menu', 'food', 'meal'],
+        responses: [
+            "You can check the weekly lunch menu on the school website.",
+            "If you have dietary concerns, the cafeteria staff can assist you.",
+            "Would you like information about lunch schedules?"
+        ]
+    },
+
+    library: {
+        keywords: ['library', 'book', 'borrow', 'return', 'study hall'],
+        responses: [
+            "The library is a great place to study or find research materials.",
+            "Make sure to return borrowed books by the due date to avoid fines.",
+            "Need help finding a book or research source?"
+        ]
+    },
+
+    transportation: {
+        keywords: ['bus', 'transport', 'ride', 'pickup', 'drop off'],
+        responses: [
+            "Bus schedules are available through the school transportation office.",
+            "If your bus is late, contact the school office for updates.",
+            "Would you like help finding transportation information?"
+        ]
+    },
+
+    counseling: {
+        keywords: ['counselor', 'guidance', 'career advice', 'college', 'scholarship'],
+        responses: [
+            "School counselors can help with academic and career planning.",
+            "If you're thinking about college or scholarships, I can provide guidance.",
+            "Would you like information about booking a counseling appointment?"
+        ]
+    }
+}
+
+        ;
 
         // Function to check if user message contains any trigger keywords
         function checkForKeywords(message) {
@@ -421,7 +419,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_report'])) {
             message.innerHTML = `
                 <div class="bot-message-text">
                     <p>${escapeHtml(text)}</p>
-                    <button class="action-button" onclick="openModal()">📞 ${buttonLabel}</button>
                 </div>
             `;
 
