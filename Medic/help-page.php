@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_report'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="js/bootstrap.bundle.min.js" />
+    <link rel="icon" type="image/x-icon" href="Pics/Logos/Lagro_High_School_logo.png">
     <title>Help Page - LHS AI Chat Bot</title>
 </head>
 <style>

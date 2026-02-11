@@ -8,6 +8,7 @@
   <title>Student Information & Records</title>
   <link href="../css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="..\js\bootstrap.bundle.min.js" />
+  <link rel="icon" type="image/x-icon" href="../Pics/Logos/Lagro_High_School_logo.png">
   <style>
     * {
       margin: 0;
