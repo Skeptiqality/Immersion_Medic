@@ -42,7 +42,7 @@ if (isset($_POST["login"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LHS | Login</title>
+    <title>Login | LHS Clinic</title>
     <link rel="icon" type="image/x-icon" href="Pics/Logos/Lagro_High_School_logo.png">
     <style>
         body {

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student Registration | LHS Clinic</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="..\js\bootstrap.bundle.min.js" />
     <link rel="icon" type="image/x-icon" href="../Pics/Logos/Lagro_High_School_logo.png">
@@ -153,7 +153,7 @@
                         </tr>
                         <tr>
                             <td><input type="text" name="middle_name"> </td>
-                            <td><input type="number" name="contact_no" min="11" max="13" required> </td>
+                            <td><input type="number" name="contact_no" oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);" required> </td>
                         </tr>
                         <tr>
                             <td>LAST NAME: </td>
@@ -202,7 +202,7 @@
                             <td>CONTACT NO.: </td>
                         </tr>
                         <tr>
-                            <td><input type="number" name="guardian_contact" min="11" max="13" required> </td>
+                            <td><input type="number" name="guardian_contact" oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);" required> </td>
                         </tr>
                         <tr>
                             <td>ADDRESS: </td>

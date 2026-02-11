@@ -289,7 +289,7 @@
             background-color: #0b7dda;
         }
     </style>
-    <title>Student List</title>
+    <title>Student List | LHS Clinic</title>
 </head>
 
 <body>
@@ -442,7 +442,7 @@
                     <div class="student-info-row">
                         <div class="student-info-item">
                             <label class="student-info-label">Contact Number</label>
-                            <input type="text" id="editContactNumber" class="form-control">
+                            <input type="number" id="editContactNumber" class="form-control" oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);">
                         </div>
                         <div class="student-info-item">
                             <label class="student-info-label">Address</label>
