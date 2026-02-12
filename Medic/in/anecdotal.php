@@ -65,8 +65,6 @@
       border-radius: 8px;
       background-color: white;
       box-shadow: var(--shadow);
-
-
     }
 
     .student-search-container {
