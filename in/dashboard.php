@@ -567,6 +567,7 @@
                 <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
                     Discharging: <strong id="dischargePatientName">-</strong>
                 </p>
+                
                 <div class="discharge-form">
                     <div class="form-group">
                         <label for="guardianName">Guardian's Name</label>
