@@ -43,10 +43,7 @@
         .sidebar-container {
             position: relative;
             left: 0;
-
         }
-
-        .confinement-form {}
 
         .table-container {
             margin: auto;
