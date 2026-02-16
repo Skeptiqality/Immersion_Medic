@@ -23,6 +23,11 @@
       box-sizing: border-box;
     }
 
+    main {
+      display: flex;
+      justify-content: centerS;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
@@ -35,6 +40,11 @@
     }
 
     /* ===== Table Section ===== */
+    .table-section {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
 
     .table-section h2 {
         font-size: 20px;
@@ -85,19 +95,20 @@
     </style>
 </head>
 <body>
-    <header class="sidebar-container">
-      <?php include "../include/sidebar.php"; ?>
-    </header>
-
-    <main>
-      <section class="section-header">
-        <h1>Admin Dashboard</h1>
+  
+  <main>
+      <section class="sidebar-container">
+        <?php include "../include/sidebar.php"; ?>
       </section>
 
       <section class="table-section">
-        <h2>Student List</h2>
+        <div class="section-header">
+          <h1>Admin Dashboard</h1>
+        </div>
 
         <div class="table-container">
+        <h2>Student List</h2>
+
           <table>
             <thead>
               <tr>
