@@ -175,7 +175,7 @@ if (isset($_POST["login"])) {
                 <form action="login.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="account_num">Employee ID</label>
-                        <input type="number" name="account_num" id="account_num" required>
+                        <input type="number" name="account_num" id="account_num" required oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);">
                     </div>
 
                     <div class="form-group">

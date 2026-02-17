@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../../Pics/Logos/Lagro_High_School_logo.png">
+    <link rel="icon" type="image/x-icon" href="../Pics/Logos/Lagro_High_School_logo.png">
     <title> Admin Page | LHS Clinic</title>
     <style>
     :root {
@@ -25,7 +25,6 @@
 
     main {
       display: flex;
-      justify-content: centerS;
     }
 
     body {
@@ -38,19 +37,26 @@
       right: 100;
       margin-bottom: -10px;
     }
+    .section-header {
+      margin-bottom: 20px;
+    }
 
     /* ===== Table Section ===== */
     .table-section {
+      width: 100%;
+      margin: 30px 40px;
       display: flex;
       flex-direction: column;
       text-align: center;
+      align-content: center;
     }
 
-    .table-section h2 {
+    .table-container h2 {
         font-size: 20px;
         font-weight: 700;
         color: #1a1a2e;
-        margin-bottom: 16px;
+        margin: 14px 20px;
+        text-align: left;
     }
     
     .table-container {

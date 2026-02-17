@@ -197,12 +197,12 @@
 
                     <div class="form-group">
                         <label for="employee_id">Employee ID</label>
-                        <input type="number" name="employee_id" id="employee_id" required>
+                        <input type="number" name="employee_id" id="employee_id" required oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);">
                     </div>
 
                     <div class="form-group">
                         <label for="mobile_num">Mobile Number</label>
-                        <input type="number" name="mobile_num" id="mobile_num" required>
+                        <input type="number" name="mobile_num" id="mobile_num" required oninput="if(this.value.length > 11) this.value = this.value.slice(0, 11);">
                     </div>
                     
                     <div class="form-group">
