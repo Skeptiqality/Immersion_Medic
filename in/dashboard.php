@@ -163,17 +163,44 @@
 
         /* ===== Table Section ===== */
 
+        .search-bar {
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            width: 250px;
+            font-size: 14px;
+            margin-right: -35px;
+            padding-right: 35px;
+        }
+
+        .search-btn {
+            position: relative;
+            background-color: #ffffff00;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            margin-right: 15px;
+        }
+
         .table-section h2 {
             font-size: 20px;
             font-weight: 700;
             color: #1a1a2e;
-            margin-bottom: 16px;
         }
 
         .table-container {
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
+            max-height: 600px;
+            overflow-y: auto;
         }
 
         table {
@@ -183,6 +210,8 @@
 
         table thead {
             background: var(--gradient-color);
+            position: sticky;
+            top: 0;
         }
 
         table thead th {
@@ -491,7 +520,15 @@
 
             <!-- Patients Table Section -->
             <div class="table-section">
-                <h2>History</h2>
+                <div class="search-container">
+                    <h2>History</h2>
+                    <div class="search">
+                        <input type="text" class="search-bar" id="searchInput" placeholder="Search by name...">
+                        <button class="search-btn" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            </svg></button>
+                    </div>
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -567,7 +604,6 @@
                 <p style="font-size: 14px; color: #555; margin-bottom: 20px;">
                     Discharging: <strong id="dischargePatientName">-</strong>
                 </p>
-                
                 <div class="discharge-form">
                     <div class="form-group">
                         <label for="guardianName">Guardian's Name</label>
@@ -607,7 +643,87 @@
     <script>
         // Store patients data globally for modal access
         let patientsData = [];
+        let filteredPatientsData = [];
         let dischargeConfinedId = null;
+        const RECORDS_PER_PAGE = 10;
+
+        // Function to render table with only 10 records
+        function renderTable() {
+            const tbody = document.getElementById('patientsTableBody');
+            
+            if (filteredPatientsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="loading-text">No patients found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+            const recordsToShow = filteredPatientsData.slice(0, RECORDS_PER_PAGE);
+            
+            recordsToShow.forEach(p => {
+                const fullName = [p.first_name, p.middle_name, p.last_name].filter(Boolean).join(' ');
+                const isDischarged = p.discharged && p.discharged !== '0000-00-00 00:00:00';
+                const statusBadge = isDischarged ?
+                    '<span class="badge-status badge-discharged">Discharged</span>' :
+                    '<span class="badge-status badge-confined">Confined</span>';
+
+                const viewBtn = `<button class="btn-view" onclick="openViewModal(${p.confined_id})">View</button>`;
+                const dischargeBtn = isDischarged ?
+                    '<button class="btn-discharge" disabled>Discharged</button>' :
+                    `<button class="btn-discharge" onclick="openDischargeModal(${p.confined_id})">Discharge</button>`;
+
+                const confinementDateTime = formatDate(p.confinement);
+                const dischargedDateTime = formatDate(p.discharged);
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${fullName}</td>
+                    <td style="text-transform: uppercase;">${p.illness || '-'}</td>
+                    <td>${confinementDateTime.date}</td>
+                    <td>${confinementDateTime.time}</td>
+                    <td>${dischargedDateTime.time}</td>
+                    <td>${statusBadge}</td>
+                    <td>${viewBtn}${dischargeBtn}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Function to filter and sort patients
+        function filterPatients(searchTerm) {
+            const term = searchTerm.toLowerCase().trim();
+            
+            // Filter patients based on search term
+            let filtered = patientsData.filter(p => {
+                const fullName = [p.first_name, p.middle_name, p.last_name].filter(Boolean).join(' ').toLowerCase();
+                const illness = (p.illness || '').toLowerCase();
+                return fullName.includes(term) || illness.includes(term);
+            });
+
+            // Sort: Active (Confined) first, then Discharged
+            filtered.sort((a, b) => {
+                const aIsDischarged = a.discharged && a.discharged !== '0000-00-00 00:00:00';
+                const bIsDischarged = b.discharged && b.discharged !== '0000-00-00 00:00:00';
+                
+                if (aIsDischarged === bIsDischarged) return 0;
+                return aIsDischarged ? 1 : -1;
+            });
+
+            filteredPatientsData = filtered;
+            renderTable();
+        }
+
+        // Add search event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function() {
+                    filterPatients(this.value);
+                });
+                searchInput.addEventListener('change', function() {
+                    filterPatients(this.value);
+                });
+            }
+        });
 
         // Animate a number counting up
         function animateCounter(elementId, start, end, duration) {
@@ -633,7 +749,10 @@
 
         // Format datetime string - returns separate date and time
         function formatDate(dt) {
-            if (!dt || dt === '0000-00-00 00:00:00') return { date: '-', time: '-' };
+            if (!dt || dt === '0000-00-00 00:00:00') return {
+                date: '-',
+                time: '-'
+            };
             const d = new Date(dt);
             const dateStr = d.toLocaleString('en-US', {
                 month: 'short',
@@ -645,7 +764,10 @@
                 minute: '2-digit',
                 hour12: true
             });
-            return { date: dateStr, time: timeStr };
+            return {
+                date: dateStr,
+                time: timeStr
+            };
         }
 
         /* ===== View Modal ===== */
@@ -806,41 +928,10 @@
                     }
 
                     patientsData = data.patients || [];
-
-                    const tbody = document.getElementById('patientsTableBody');
-
-                    if (patientsData.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="10" class="loading-text">No confined patients found.</td></tr>';
-                    } else {
-                        tbody.innerHTML = '';
-                        patientsData.forEach(p => {
-                            const fullName = [p.first_name, p.middle_name, p.last_name].filter(Boolean).join(' ');
-                            const isDischarged = p.discharged && p.discharged !== '0000-00-00 00:00:00';
-                            const statusBadge = isDischarged ?
-                                '<span class="badge-status badge-discharged">Discharged</span>' :
-                                '<span class="badge-status badge-confined">Confined</span>';
-
-                            const viewBtn = `<button class="btn-view" onclick="openViewModal(${p.confined_id})">View</button>`;
-                            const dischargeBtn = isDischarged ?
-                                '<button class="btn-discharge" disabled>Discharged</button>' :
-                                `<button class="btn-discharge" onclick="openDischargeModal(${p.confined_id})">Discharge</button>`;
-
-                            const confinementDateTime = formatDate(p.confinement);
-                            const dischargedDateTime = formatDate(p.discharged);
-
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${fullName}</td>
-                                <td style="text-transform: uppercase;">${p.illness || '-'}</td>
-                                <td>${confinementDateTime.date}</td>
-                                <td>${confinementDateTime.time}</td>
-                                <td>${dischargedDateTime.time}</td>
-                                <td>${statusBadge}</td>
-                                <td>${viewBtn}${dischargeBtn}</td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
-                    }
+                    
+                    // Reset search and render table with all patients sorted
+                    document.getElementById('searchInput').value = '';
+                    filterPatients('');
                 })
                 .catch(err => {
                     console.error('Failed to load dashboard:', err);

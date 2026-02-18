@@ -7,7 +7,8 @@ if (isset($_POST["login"])) {
     $id = $_POST["account_num"];
     $password = $_POST["account_pass"];
 
-    $stmt = $conn->prepare("SELECT account_id, employee_id, account_pass FROM registered_accounts WHERE employee_id = ?");
+    // Query updated to get role
+    $stmt = $conn->prepare("SELECT account_id, employee_id, account_pass, role FROM registered_accounts WHERE employee_id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -19,6 +20,7 @@ if (isset($_POST["login"])) {
         if (password_verify($password, $user['account_pass']) || $password === $user['account_pass']) {
             $_SESSION['account_id'] = $user['account_id'];
             $_SESSION['employee_id'] = $user['employee_id'];
+            $_SESSION['role'] = $user['role']; // Store role in session
             echo "<script>alert('Successfully Login.'); window.location.href='in/dashboard.php'</script>";
             exit();
         } else {
@@ -175,7 +177,7 @@ if (isset($_POST["login"])) {
                 <form action="login.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="account_num">Employee ID</label>
-                        <input type="number" name="account_num" id="account_num" required oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);">
+                        <input type="number" name="account_num" id="account_num" required>
                     </div>
 
                     <div class="form-group">
