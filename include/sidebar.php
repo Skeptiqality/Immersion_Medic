@@ -16,8 +16,8 @@ $userRole = isset($_SESSION['role']) ? $_SESSION['role'] : 'guest';
 $rolePermissions = [
     'admin' => ['dashboard', 'index', 'confine', 'studentlist', 'anecdotal', 'reports', 'history'],
     'doctor' => ['dashboard', 'index', 'confine', 'studentlist', 'history'],
-    'teacher' => ['dashboard', 'anecdotal'],
-    'guidance' => ['reports']
+    'teacher' => ['anecdotal'],
+    'guidance' => ['reports', 'anecdotal'],
 ];
 
 // Get allowed links for current role
