@@ -120,7 +120,7 @@
             color: #1b5e20;
         }
 
-        input[type=number], input[type=password], input[type=text] {
+        input[type=number], input[type=password], input[type=text], select {
             padding: 8px 10px;
             width: 100%;
             border: 3px solid rgba(201, 201, 201, 0.7);
@@ -213,6 +213,17 @@
                     <div class="form-group">
                         <label for="account_pass">Password</label>
                         <input type="password" name="account_pass" id="account_pass" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select name="role" id="role" required>
+                            <option value="">Select Role</option>
+                            <option value="admin">Admin</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="guidance">Guidance Counselor</option>
+                        </select>
                     </div>
 
                     <button type="submit" class="submit-btn" name="register">Register Account</button>

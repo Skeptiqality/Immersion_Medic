@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2026 at 04:57 PM
+-- Generation Time: Feb 18, 2026 at 02:30 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -90,9 +90,9 @@ INSERT INTO `confined` (`confined_id`, `lrn`, `first_name`, `middle_ name`, `las
 (1, '123123123123', 'Dez', 'Rey', 'Ber', '10 - Magnesium', 21, '9193691288', '9498597674', 'flu', '1', '2026-02-13 05:53:21', '2026-02-13 06:13:42'),
 (2, '136536130601', 'Dezcartes Rey', 'Ferrer', 'Bermudez', '12 - Rossum', 21, '09498597674', '123', 'cold', '1', '2026-02-13 06:08:14', '0000-00-00 00:00:00'),
 (3, '136536130601', 'Dezcartes Rey', 'Ferrer', 'Bermudez', '12 - Rossum', 21, '09498597674', '123', 'fever', '2', '2026-02-13 06:08:23', '0000-00-00 00:00:00'),
-(4, '123123123123', 'Dez', 'Rey', 'Ber', '10 - Magnesium', 21, '9193691288', '9498597674', 'headache', '2', '2026-02-13 06:08:30', '0000-00-00 00:00:00'),
-(5, '123123123123', 'Dez', 'Rey', 'Ber', '10 - Magnesium', 21, '9193691288', '9498597674', 'headache', '3', '2026-02-13 06:09:09', '0000-00-00 00:00:00'),
-(6, '136536130601', 'Dezcartes Rey', 'Ferrer', 'Bermudez', '12 - Rossum', 21, '09498597674', '123', 'stomachache', '3', '2026-02-13 06:09:31', '0000-00-00 00:00:00');
+(4, '123123123123', 'Dez', 'Rey', 'Ber', '10 - Magnesium', 21, '9193691288', '9498597674', 'headache', '2', '2026-02-13 06:08:30', '2026-02-18 09:26:17'),
+(5, '123123123123', 'Dez', 'Rey', 'Ber', '10 - Magnesium', 21, '9193691288', '9498597674', 'headache', '3', '2026-02-13 06:09:09', '2026-02-18 09:16:49'),
+(6, '136536130601', 'Dezcartes Rey', 'Ferrer', 'Bermudez', '12 - Rossum', 21, '09498597674', '123', 'stomachache', '3', '2026-02-13 06:09:31', '2026-02-18 09:10:51');
 
 -- --------------------------------------------------------
 
@@ -115,7 +115,10 @@ CREATE TABLE `discharged` (
 --
 
 INSERT INTO `discharged` (`discharge_id`, `student_name`, `guardians_name`, `contact_no`, `address`, `relationship`, `time_out`) VALUES
-(1, 'Dez Rey Ber', 'Kewk', '123', 'bahay', 'Other', '2026-02-13 06:13:42');
+(1, 'Dez Rey Ber', 'Kewk', '123', 'bahay', 'Other', '2026-02-13 06:13:42'),
+(2, 'Dezcartes Rey Ferrer Bermudez', '123', '123456789012', '123', 'Father', '2026-02-18 09:10:51'),
+(3, 'Dez Rey Ber', '123', '123456789012', '123', 'Sibling', '2026-02-18 09:16:49'),
+(4, 'Dez Rey Ber', '123', '123456789012', '123', 'Mother', '2026-02-18 09:26:17');
 
 -- --------------------------------------------------------
 
@@ -353,7 +356,7 @@ ALTER TABLE `confined`
 -- AUTO_INCREMENT for table `discharged`
 --
 ALTER TABLE `discharged`
-  MODIFY `discharge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `discharge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `medications`
