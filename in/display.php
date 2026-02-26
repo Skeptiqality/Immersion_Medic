@@ -457,7 +457,7 @@
                     </thead>
                     <tbody id="studentTableBody">
                         <?php
-                        $conn = new mysqli("localhost", "root", "", "enroll_db");
+                        $conn = new mysqli("localhost", "root", "", "medic_enroll_db");
 
 
                         $sql = "SELECT * FROM pre_enroll_table";

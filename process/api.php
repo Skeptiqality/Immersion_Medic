@@ -3,7 +3,7 @@ session_start();
 
 // Database configuration
 $host = 'localhost';
-$db = 'lhs_clinic';
+$db = 'medic_lhs_clinic';
 $user = 'root';
 $password = '';
 

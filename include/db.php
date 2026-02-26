@@ -3,7 +3,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "lhs_clinic";
+$db = "medic_lhs_clinic";
 
 $conn = new mysqli($host, $user, $pass, $db);
 if (!$conn) {
