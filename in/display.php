@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,14 +22,6 @@
 
         .active {
             display: block !important;
-        }
-
-        main {
-            display: flex;
-        }
-
-        .sidebar-container {
-            flex-shrink: 0;
         }
 
         .container {
@@ -416,235 +409,500 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="sidebar-container">
-    <?php include "../include/sidebar.php" ?>
-</div>
+    <div class="sidebar-container">
+        <?php include "../include/sidebar.php" ?>
+    </div>
 
-<div class="main-content">
+    <div class="main-content">
 
-<div class="page-header">
-    <h1>Pre-Enrollment Records</h1>
-    <p>Click on any student row to view full details.</p>
-</div>
-
-<div class="table-main">
-    <div class="table-header">
-        <div class="header-filters">
-            <select id="gradeFilter">
-                <option value="">All Grades</option>
-            </select>
+        <div class="page-header">
+            <h1>Pre-Enrollment Records</h1>
+            <p>Click on any student row to view full details.</p>
         </div>
-        <div class="search">
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search by name...">
-            <button class="search-btn" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                </svg></button>
+
+        <div class="table-main">
+            <div class="table-header">
+                <div class="header-filters">
+                    <select id="gradeFilter">
+                        <option value="">All Grades</option>
+                    </select>
+                    <select id="genderFilter">
+                        <option value="">All Genders</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="search">
+                    <input type="text" class="search-bar" id="searchInput" placeholder="Search by name...">
+                    <button class="search-btn" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg></button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table cellpadding="10" cellspacing="0" class="table" border="0">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center; width: 15%;">Applicant ID</th>
+                            <th style="text-align: center; width: 30%;">Full Name</th>
+                            <th style="text-align: center; width: 12%;">LRN</th>
+                            <th style="text-align: center; width: 15%;">Grade Level</th>
+                            <th style="text-align: center; width: 12%;">Sex</th>
+                            <th style="text-align: center; width: 16%;">Date Enrolled</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <?php
+                        $conn = new mysqli("localhost", "root", "", "enroll_db");
+
+
+                        $sql = "SELECT * FROM pre_enroll_table";
+                        $result = mysqli_query($conn, $sql);
+                        $students = [];
+
+                        if ($result && $result->num_rows > 0):
+                            while ($row = $result->fetch_assoc()):
+                                $id = $row['Applicant_id'];
+                                $students[$id] = $row;
+                                $fullName = htmlspecialchars($row['f_Name'] . ' ' . $row['m_Name'] . ' ' . $row['l_Name']);
+                                $sexBadge = $row['sex'] === 'Male' ? 'badge-male' : 'badge-female';
+                        ?>
+                                <tr onclick="openModal('<?= htmlspecialchars($id, ENT_QUOTES) ?>')">
+                                    <td class="id-cell"><?= htmlspecialchars($id) ?></td>
+                                    <td style="text-transform: uppercase;"><strong><?= $fullName ?></strong></td>
+                                    <td class="id-cell"><?= htmlspecialchars($row['lrn_id']) ?></td>
+                                    <td><span class="badge badge-grade"><?= htmlspecialchars($row['grade_lvl']) ?></span></td>
+                                    <td><span class="badge <?= $sexBadge ?>"><?= htmlspecialchars($row['sex']) ?></span></td>
+                                    <td><?= htmlspecialchars($row['pre_enroll_date']) ?></td>
+                                </tr>
+                        <?php
+                            endwhile;
+                        else:
+                            echo "<tr><td colspan='6' class='no-results'>No records found</td></tr>";
+                        endif;
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- end .main-content -->
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeOnBackdrop(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <div class="modal-title" id="modalName">—</div>
+                    <div class="modal-subtitle" id="modalId">—</div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <!-- SECTION 1: Student Info -->
+                <div>
+                    <div class="section-label">Student Information</div>
+                    <table class="info-table">
+                        <tr>
+                            <th>Applicant ID</th>
+                            <td><span class="mono" id="m_applicant_id"></span></td>
+                        </tr>
+                        <tr>
+                            <th>LRN</th>
+                            <td><span class="mono" id="m_lrn"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Full Name</th>
+                            <td id="m_fullname"></td>
+                        </tr>
+                        <tr>
+                            <th>Birthdate</th>
+                            <td id="m_bday"></td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td id="m_age"></td>
+                        </tr>
+                        <tr>
+                            <th>Sex</th>
+                            <td id="m_sex"></td>
+                        </tr>
+                        <tr>
+                            <th>Mother Tongue</th>
+                            <td id="m_tongue"></td>
+                        </tr>
+                        <tr>
+                            <th>IP Community</th>
+                            <td id="m_ip"></td>
+                        </tr>
+                        <tr>
+                            <th>4Ps Beneficiary</th>
+                            <td id="m_4ps"></td>
+                        </tr>
+                        <tr>
+                            <th>4Ps ID</th>
+                            <td id="m_4ps_id"></td>
+                        </tr>
+                        <tr>
+                            <th>Disability</th>
+                            <td id="m_disability"></td>
+                        </tr>
+                        <tr>
+                            <th>Birth Certificate No.</th>
+                            <td><span class="mono" id="m_birthcert"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Birthplace</th>
+                            <td id="m_birthplace"></td>
+                        </tr>
+                        <tr>
+                            <th>Current Address</th>
+                            <td id="m_curr_add"></td>
+                        </tr>
+                        <tr>
+                            <th>Permanent Address</th>
+                            <td id="m_perm_add"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- SECTION 2: Guardian/Parents Info -->
+                <div>
+                    <div class="section-label">Guardian / Parents Information</div>
+                    <table class="info-table">
+                        <tr>
+                            <th>Father's Name</th>
+                            <td id="m_father"></td>
+                        </tr>
+                        <tr>
+                            <th>Father's Contact</th>
+                            <td><span class="mono" id="m_father_contact"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Mother's Name</th>
+                            <td id="m_mother"></td>
+                        </tr>
+                        <tr>
+                            <th>Mother's Contact</th>
+                            <td><span class="mono" id="m_mother_contact"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Guardian's Name</th>
+                            <td id="m_guardian"></td>
+                        </tr>
+                        <tr>
+                            <th>Guardian's Contact</th>
+                            <td><span class="mono" id="m_guardian_contact"></span></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- SECTION 3: Enrollment Info -->
+                <div>
+                    <div class="section-label">Enrollment Information</div>
+                    <table class="info-table">
+                        <tr>
+                            <th>Grade Level</th>
+                            <td id="m_grade"></td>
+                        </tr>
+                        <tr>
+                            <th>Track</th>
+                            <td id="m_track"></td>
+                        </tr>
+                        <tr>
+                            <th>Strand / Pathway</th>
+                            <td id="m_pathway"></td>
+                        </tr>
+                        <tr>
+                            <th>Semester</th>
+                            <td id="m_sem"></td>
+                        </tr>
+                        <tr>
+                            <th>School Year</th>
+                            <td id="m_schyr"></td>
+                        </tr>
+                        <tr>
+                            <th>Learning Modality</th>
+                            <td id="m_modality"></td>
+                        </tr>
+                        <tr>
+                            <th>Last Grade Completed</th>
+                            <td id="m_lastgrade"></td>
+                        </tr>
+                        <tr>
+                            <th>Last School Attended</th>
+                            <td id="m_lastsch"></td>
+                        </tr>
+                        <tr>
+                            <th>Last Year Completed</th>
+                            <td id="m_lastyr"></td>
+                        </tr>
+                        <tr>
+                            <th>School ID</th>
+                            <td><span class="mono" id="m_schid"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Has LRN</th>
+                            <td id="m_withlrn"></td>
+                        </tr>
+                        <tr>
+                            <th>Returning Student</th>
+                            <td id="m_returning"></td>
+                        </tr>
+                        <tr>
+                            <th>Pre-Enrollment Date</th>
+                            <td id="m_date"></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <div class="table-container">
-        <table cellpadding="10" cellspacing="0" class="table" border="0">
-            <thead>
-                <tr>
-                    <th style="text-align: center; width: 15%;">Applicant ID</th>
-                    <th style="text-align: center; width: 30%;">Full Name</th>
-                    <th style="text-align: center; width: 12%;">LRN</th>
-                    <th style="text-align: center; width: 15%;">Grade Level</th>
-                    <th style="text-align: center; width: 12%;">Sex</th>
-                    <th style="text-align: center; width: 16%;">Date Enrolled</th>
-                </tr>
-            </thead>
-            <tbody id="studentTableBody">
-            <?php
-            include "../include/enroll.php";
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            setupFilterListeners();
+        });
 
-            $sql = "SELECT * FROM pre_enroll_table";
-            $result = mysqli_query($conn, $sql);
-            $students = [];
+        function setupFilterListeners() {
+            document.getElementById('searchInput').addEventListener('keyup', applyFiltersViaAPI);
+            document.getElementById('gradeFilter').addEventListener('change', applyFiltersViaAPI);
+            document.getElementById('genderFilter').addEventListener('change', applyFiltersViaAPI);
+        }
 
-            if ($result && $result->num_rows > 0):
-                while ($row = $result->fetch_assoc()):
-                    $id = $row['Applicant_id'];
-                    $students[$id] = $row;
-                    $fullName = htmlspecialchars($row['f_Name'] . ' ' . $row['m_Name'] . ' ' . $row['l_Name']);
-                    $sexBadge = $row['sex'] === 'Male' ? 'badge-male' : 'badge-female';
-            ?>
-                <tr onclick="openModal('<?= htmlspecialchars($id, ENT_QUOTES) ?>')">
-                    <td class="id-cell"><?= htmlspecialchars($id) ?></td>
-                    <td style="text-transform: uppercase;"><strong><?= $fullName ?></strong></td>
-                    <td class="id-cell"><?= htmlspecialchars($row['lrn_id']) ?></td>
-                    <td><span class="badge badge-grade"><?= htmlspecialchars($row['grade_lvl']) ?></span></td>
-                    <td><span class="badge <?= $sexBadge ?>"><?= htmlspecialchars($row['sex']) ?></span></td>
-                    <td><?= htmlspecialchars($row['pre_enroll_date']) ?></td>
-                </tr>
-            <?php
-                endwhile;
-            else:
-                echo "<tr><td colspan='6' class='no-results'>No records found</td></tr>";
-            endif;
-            ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+        function applyFiltersViaAPI() {
+            const search = document.getElementById('searchInput').value.trim();
+            const grade = document.getElementById('gradeFilter').value;
+            const gender = document.getElementById('genderFilter').value;
 
-</div><!-- end .main-content -->
+            const params = new URLSearchParams();
+            params.append('action', 'search_students');
+            if (search) params.append('search', search);
+            if (grade) params.append('grade', grade);
+            if (gender) params.append('gender', gender);
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeOnBackdrop(event)">
-    <div class="modal">
-        <div class="modal-header">
-            <div class="modal-header-left">
-                <div class="modal-title" id="modalName">—</div>
-                <div class="modal-subtitle" id="modalId">—</div>
-            </div>
-            <button class="modal-close" onclick="closeModal()">✕</button>
-        </div>
-        <div class="modal-body">
+            fetch(`fetch.php?${params}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('API Error:', data.error);
+                        showNoResults();
+                        return;
+                    }
+                    updateTableWithResults(data.students || []);
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    showNoResults();
+                });
+        }
 
-            <!-- SECTION 1: Student Info -->
-            <div>
-                <div class="section-label">Student Information</div>
-                <table class="info-table">
-                    <tr><th>Applicant ID</th><td><span class="mono" id="m_applicant_id"></span></td></tr>
-                    <tr><th>LRN</th><td><span class="mono" id="m_lrn"></span></td></tr>
-                    <tr><th>Full Name</th><td id="m_fullname"></td></tr>
-                    <tr><th>Birthdate</th><td id="m_bday"></td></tr>
-                    <tr><th>Age</th><td id="m_age"></td></tr>
-                    <tr><th>Sex</th><td id="m_sex"></td></tr>
-                    <tr><th>Mother Tongue</th><td id="m_tongue"></td></tr>
-                    <tr><th>IP Community</th><td id="m_ip"></td></tr>
-                    <tr><th>4Ps Beneficiary</th><td id="m_4ps"></td></tr>
-                    <tr><th>4Ps ID</th><td id="m_4ps_id"></td></tr>
-                    <tr><th>Disability</th><td id="m_disability"></td></tr>
-                    <tr><th>Birth Certificate No.</th><td><span class="mono" id="m_birthcert"></span></td></tr>
-                    <tr><th>Birthplace</th><td id="m_birthplace"></td></tr>
-                    <tr><th>Current Address</th><td id="m_curr_add"></td></tr>
-                    <tr><th>Permanent Address</th><td id="m_perm_add"></td></tr>
-                </table>
-            </div>
+        function updateTableWithResults(students) {
+            const tbody = document.getElementById('studentTableBody');
+            const rows = tbody.querySelectorAll('tr:not(.no-results-filter)');
 
-            <!-- SECTION 2: Guardian/Parents Info -->
-            <div>
-                <div class="section-label">Guardian / Parents Information</div>
-                <table class="info-table">
-                    <tr><th>Father's Name</th><td id="m_father"></td></tr>
-                    <tr><th>Father's Contact</th><td><span class="mono" id="m_father_contact"></span></td></tr>
-                    <tr><th>Mother's Name</th><td id="m_mother"></td></tr>
-                    <tr><th>Mother's Contact</th><td><span class="mono" id="m_mother_contact"></span></td></tr>
-                    <tr><th>Guardian's Name</th><td id="m_guardian"></td></tr>
-                    <tr><th>Guardian's Contact</th><td><span class="mono" id="m_guardian_contact"></span></td></tr>
-                </table>
-            </div>
+            rows.forEach(row => row.remove());
 
-            <!-- SECTION 3: Enrollment Info -->
-            <div>
-                <div class="section-label">Enrollment Information</div>
-                <table class="info-table">
-                    <tr><th>Grade Level</th><td id="m_grade"></td></tr>
-                    <tr><th>Track</th><td id="m_track"></td></tr>
-                    <tr><th>Strand / Pathway</th><td id="m_pathway"></td></tr>
-                    <tr><th>Semester</th><td id="m_sem"></td></tr>
-                    <tr><th>School Year</th><td id="m_schyr"></td></tr>
-                    <tr><th>Learning Modality</th><td id="m_modality"></td></tr>
-                    <tr><th>Last Grade Completed</th><td id="m_lastgrade"></td></tr>
-                    <tr><th>Last School Attended</th><td id="m_lastsch"></td></tr>
-                    <tr><th>Last Year Completed</th><td id="m_lastyr"></td></tr>
-                    <tr><th>School ID</th><td><span class="mono" id="m_schid"></span></td></tr>
-                    <tr><th>Has LRN</th><td id="m_withlrn"></td></tr>
-                    <tr><th>Returning Student</th><td id="m_returning"></td></tr>
-                    <tr><th>Pre-Enrollment Date</th><td id="m_date"></td></tr>
-                </table>
-            </div>
+            if (students.length === 0) {
+                showNoResults();
+                return;
+            }
 
-        </div>
-    </div>
-</div>
+            // Populate table with filtered results
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                const fullName = `${student.first_name} ${student.middle_name} ${student.last_name}`.trim().toUpperCase();
+                const genderBadge = student.gender === 'Male' ? 'badge-male' : 'badge-female';
 
-<script>
-const STUDENTS = <?= json_encode($students, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+                row.onclick = function() {
+                    const studentId = STUDENTS[Object.keys(STUDENTS).find(key =>
+                        STUDENTS[key].f_Name + ' ' + STUDENTS[key].m_Name + ' ' + STUDENTS[key].l_Name === fullName
+                    )];
+                    if (studentId) openModal(Object.keys(STUDENTS).find(key => STUDENTS[key] === studentId));
+                };
 
-function openModal(id) {
-    const data = STUDENTS[id];
-    if (!data) return;
+                row.innerHTML = `
+            <td class="id-cell">${student.user_id}</td>
+            <td style="text-transform: uppercase;"><strong>${fullName}</strong></td>
+            <td class="id-cell">${student.lrn || '—'}</td>
+            <td><span class="badge badge-grade">${student.grade_section || '—'}</span></td>
+            <td><span class="badge ${genderBadge}">${student.gender || '—'}</span></td>
+            <td>—</td>
+        `;
 
-    document.getElementById('modalName').textContent =
-        data.f_Name + ' ' + data.m_Name + ' ' + data.l_Name +
-        (data.ext_name && data.ext_name !== 'none' ? ' ' + data.ext_name : '');
-    document.getElementById('modalId').textContent =
-        'Applicant ID: ' + data.Applicant_id + '  ·  LRN: ' + data.lrn_id;
+                tbody.appendChild(row);
+            });
+        }
 
-    document.getElementById('m_applicant_id').textContent = data.Applicant_id;
-    document.getElementById('m_lrn').textContent = data.lrn_id;
-    document.getElementById('m_fullname').textContent =
-        data.f_Name + ' ' + data.m_Name + ' ' + data.l_Name +
-        (data.ext_name && data.ext_name !== 'none' ? ' ' + data.ext_name : '');
-    document.getElementById('m_bday').textContent = data.b_Day;
-    document.getElementById('m_age').textContent = data.age;
-    document.getElementById('m_sex').textContent = data.sex;
-    document.getElementById('m_tongue').textContent = data.m_Tongue;
-    document.getElementById('m_ip').textContent =
-        data.ip_community === 'Yes' ? 'Yes – ' + data.specific_com : 'No';
-    document.getElementById('m_4ps').textContent = data['4ps'];
-    document.getElementById('m_4ps_id').textContent = data['4ps'] === 'Yes' ? data['4ps_id'] : '—';
-    document.getElementById('m_disability').textContent =
-        data.disability === 'Yes' ? 'Yes – ' + data.specific_disability : 'No';
-    document.getElementById('m_birthcert').textContent = data.birth_cert_No;
-    document.getElementById('m_birthplace').textContent = data.birth_place;
+        function showNoResults() {
+            const tbody = document.getElementById('studentTableBody');
 
-    const currAdd = [
-        data.house_no ? 'No. ' + data.house_no : '',
-        data.st_name, data.brgy, data.city, data.province, data.country,
-        data.zip_code || ''
-    ].filter(Boolean).join(', ');
-    document.getElementById('m_curr_add').textContent = currAdd;
+            let noResultsRow = tbody.querySelector('.no-results-filter');
+            if (noResultsRow) noResultsRow.remove();
 
-    const permAdd = data.perma_add === 'Yes' ? 'Same as current address' : [
-        data.p_house_no ? 'No. ' + data.p_house_no : '',
-        data.p_st_name, data.p_brgy, data.p_city, data.p_province, data.p_country,
-        data.p_zip_code || ''
-    ].filter(Boolean).join(', ');
-    document.getElementById('m_perm_add').textContent = permAdd;
+            const rows = tbody.querySelectorAll('tr:not(.no-results-filter)');
+            rows.forEach(row => row.remove());
 
-    document.getElementById('m_father').textContent =
-        [data.father_Fname, data.father_Mname, data.father_Lname].filter(v => v && v !== '0').join(' ') || '—';
-    document.getElementById('m_father_contact').textContent = data.father_contact || '—';
-    document.getElementById('m_mother').textContent =
-        [data.mother_Fname, data.mother_Mname, data.mother_Lname].filter(v => v && v !== '0').join(' ') || '—';
-    document.getElementById('m_mother_contact').textContent = data.mother_contact || '—';
-    document.getElementById('m_guardian').textContent =
-        [data.guardian_Fname, data.guardian_Mname, data.guardian_Lname].filter(v => v && v !== '0').join(' ') || '—';
-    document.getElementById('m_guardian_contact').textContent = data.guardian_contact || '—';
+            noResultsRow = document.createElement('tr');
+            noResultsRow.className = 'no-results-filter';
+            noResultsRow.innerHTML = '<td colspan="6" class="no-results">No results found</td>';
+            tbody.appendChild(noResultsRow);
+        }
 
-    document.getElementById('m_grade').textContent = data.grade_lvl;
-    document.getElementById('m_track').textContent = data.track || '—';
-    document.getElementById('m_pathway').textContent = data.pathway || '—';
-    document.getElementById('m_sem').textContent = data.sem + ' Semester';
-    document.getElementById('m_schyr').textContent = data.sch_yr;
-    document.getElementById('m_modality').textContent = data.learning_modality;
-    document.getElementById('m_lastgrade').textContent = 'Grade ' + data.last_gr_complete;
-    document.getElementById('m_lastsch').textContent = data.last_sch_attend;
-    document.getElementById('m_lastyr').textContent = data.last_yr_complete;
-    document.getElementById('m_schid').textContent = data.sch_id;
-    document.getElementById('m_withlrn').textContent = data.with_lrn;
-    document.getElementById('m_returning').textContent = data.returning;
-    document.getElementById('m_date').textContent = data.pre_enroll_date;
+        // ========== FILTER FUNCTIONALITY ==========
+        window.addEventListener('DOMContentLoaded', function() {
+            loadGradesFilter();
+            setupFilterListeners();
+        });
 
-    document.getElementById('modalOverlay').classList.add('open');
-}
+        function loadGradesFilter() {
+            const grades = Object.values(STUDENTS).map(s => s.grade_lvl).filter(Boolean);
+            const uniqueGrades = [...new Set(grades)].sort();
 
-function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-}
+            const gradeSelect = document.getElementById('gradeFilter');
+            uniqueGrades.forEach(grade => {
+                const option = document.createElement('option');
+                option.value = grade;
+                option.textContent = grade;
+                gradeSelect.appendChild(option);
+            });
+        }
 
-function closeOnBackdrop(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
+        function setupFilterListeners() {
+            document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+            document.getElementById('gradeFilter').addEventListener('change', applyFilters);
+            document.getElementById('genderFilter').addEventListener('change', applyFilters);
+        }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-</script>
+        function applyFilters() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            const gradeFilter = document.getElementById('gradeFilter').value;
+            const genderFilter = document.getElementById('genderFilter').value;
+
+            const rows = document.querySelectorAll('#studentTableBody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length === 0) return;
+
+                const name = cells[1]?.textContent.toLowerCase() || '';
+                const grade = cells[3]?.textContent.toLowerCase() || '';
+                const gender = cells[4]?.textContent.toLowerCase() || '';
+
+                const matchesSearch = name.includes(searchQuery);
+                const matchesGrade = !gradeFilter || grade.includes(gradeFilter.toLowerCase());
+                const matchesGender = !genderFilter || gender.includes(genderFilter.toLowerCase());
+
+                row.style.display = (matchesSearch && matchesGrade && matchesGender) ? '' : 'none';
+            });
+
+            checkNoResults();
+        }
+
+        function checkNoResults() {
+            const visibleRows = document.querySelectorAll('tbody tr:not([style*="display: none"])');
+            let noResultsRow = document.querySelector('tbody tr.no-results-filter');
+
+            if (visibleRows.length === 0) {
+                if (!noResultsRow) {
+                    noResultsRow = document.createElement('tr');
+                    noResultsRow.className = 'no-results-filter';
+                    noResultsRow.innerHTML = '<td colspan="6" class="no-results">No results found</td>';
+                    document.querySelector('tbody').appendChild(noResultsRow);
+                }
+                noResultsRow.style.display = '';
+            } else if (noResultsRow) {
+                noResultsRow.style.display = 'none';
+            }
+        }
+
+        const STUDENTS = <?= json_encode($students, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+
+        function openModal(id) {
+            const data = STUDENTS[id];
+            if (!data) return;
+
+            document.getElementById('modalName').textContent =
+                data.f_Name + ' ' + data.m_Name + ' ' + data.l_Name +
+                (data.ext_name && data.ext_name !== 'none' ? ' ' + data.ext_name : '');
+            document.getElementById('modalId').textContent =
+                'Applicant ID: ' + data.Applicant_id + '  ·  LRN: ' + data.lrn_id;
+
+            document.getElementById('m_applicant_id').textContent = data.Applicant_id;
+            document.getElementById('m_lrn').textContent = data.lrn_id;
+            document.getElementById('m_fullname').textContent =
+                data.f_Name + ' ' + data.m_Name + ' ' + data.l_Name +
+                (data.ext_name && data.ext_name !== 'none' ? ' ' + data.ext_name : '');
+            document.getElementById('m_bday').textContent = data.b_Day;
+            document.getElementById('m_age').textContent = data.age;
+            document.getElementById('m_sex').textContent = data.sex;
+            document.getElementById('m_tongue').textContent = data.m_Tongue;
+            document.getElementById('m_ip').textContent =
+                data.ip_community === 'Yes' ? 'Yes – ' + data.specific_com : 'No';
+            document.getElementById('m_4ps').textContent = data['4ps'];
+            document.getElementById('m_4ps_id').textContent = data['4ps'] === 'Yes' ? data['4ps_id'] : '—';
+            document.getElementById('m_disability').textContent =
+                data.disability === 'Yes' ? 'Yes – ' + data.specific_disability : 'No';
+            document.getElementById('m_birthcert').textContent = data.birth_cert_No;
+            document.getElementById('m_birthplace').textContent = data.birth_place;
+
+            const currAdd = [
+                data.house_no ? 'No. ' + data.house_no : '',
+                data.st_name, data.brgy, data.city, data.province, data.country,
+                data.zip_code || ''
+            ].filter(Boolean).join(', ');
+            document.getElementById('m_curr_add').textContent = currAdd;
+
+            const permAdd = data.perma_add === 'Yes' ? 'Same as current address' : [
+                data.p_house_no ? 'No. ' + data.p_house_no : '',
+                data.p_st_name, data.p_brgy, data.p_city, data.p_province, data.p_country,
+                data.p_zip_code || ''
+            ].filter(Boolean).join(', ');
+            document.getElementById('m_perm_add').textContent = permAdd;
+
+            document.getElementById('m_father').textContent = [data.father_Fname, data.father_Mname, data.father_Lname].filter(v => v && v !== '0').join(' ') || '—';
+            document.getElementById('m_father_contact').textContent = data.father_contact || '—';
+            document.getElementById('m_mother').textContent = [data.mother_Fname, data.mother_Mname, data.mother_Lname].filter(v => v && v !== '0').join(' ') || '—';
+            document.getElementById('m_mother_contact').textContent = data.mother_contact || '—';
+            document.getElementById('m_guardian').textContent = [data.guardian_Fname, data.guardian_Mname, data.guardian_Lname].filter(v => v && v !== '0').join(' ') || '—';
+            document.getElementById('m_guardian_contact').textContent = data.guardian_contact || '—';
+
+            document.getElementById('m_grade').textContent = data.grade_lvl;
+            document.getElementById('m_track').textContent = data.track || '—';
+            document.getElementById('m_pathway').textContent = data.pathway || '—';
+            document.getElementById('m_sem').textContent = data.sem + ' Semester';
+            document.getElementById('m_schyr').textContent = data.sch_yr;
+            document.getElementById('m_modality').textContent = data.learning_modality;
+            document.getElementById('m_lastgrade').textContent = 'Grade ' + data.last_gr_complete;
+            document.getElementById('m_lastsch').textContent = data.last_sch_attend;
+            document.getElementById('m_lastyr').textContent = data.last_yr_complete;
+            document.getElementById('m_schid').textContent = data.sch_id;
+            document.getElementById('m_withlrn').textContent = data.with_lrn;
+            document.getElementById('m_returning').textContent = data.returning;
+            document.getElementById('m_date').textContent = data.pre_enroll_date;
+
+            document.getElementById('modalOverlay').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+        }
+
+        function closeOnBackdrop(e) {
+            if (e.target === document.getElementById('modalOverlay')) closeModal();
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
 
 </body>
+
 </html>
