@@ -7,169 +7,414 @@
     <link rel="icon" type="image/x-icon" href="../Pics/Logos/Lagro_High_School_logo.png">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg: #f5f5f5;
-            --surface: #ffffff;
-            --border: #e0e0e0;
-            --text: #1a1a1a;
-            --muted: #555555;
-            --accent: rgb(10, 89, 52);
-            --accent-light: #e8f5e9;
-            --row-hover: #e8f5e9;
-            --shadow: 0 2px 5px rgba(0,0,0,0.4);
-            --shadow-lg: 0 4px 8px rgba(0,0,0,0.15);
-            --gradient: linear-gradient(90deg, rgb(10, 89, 52) 50%, rgb(55, 123, 77) 100%);
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
             display: flex;
         }
 
-        /* ── LAYOUT ── */
+        .active {
+            display: block !important;
+        }
+
+        main {
+            display: flex;
+        }
+
         .sidebar-container {
-            flex-shrink: 0;
-        }
-        .main-content {
-            flex: 1;
-            padding: 2rem;
-            overflow-x: hidden;
+            position: relative;
+            margin-bottom: -10px;
         }
 
-        /* PAGE HEADER */
-        .page-header { margin-bottom: 2rem; }
-        .page-header h1 { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.03em; }
-        .page-header p { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+        .container {
+            display: flex;
+        }
 
-        /* MAIN TABLE */
-        .table-wrapper {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
+        .table-main {
+            width: 100%;
+            margin-top: 20px;
         }
-        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        thead th {
-            background: var(--gradient);
-            color: #fff;
-            font-weight: 500;
-            font-size: 0.75rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            padding: 0.85rem 1rem;
-            text-align: left;
+
+        /* Table */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid black;
+            border-radius: 12px 12px 0px 0px;
+            height: 60px;
+            padding: 0 20px;
+            gap: 20px;
+            background-color: white;
         }
-        tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; }
-        tbody tr:last-child { border-bottom: none; }
-        tbody tr:hover { background: var(--row-hover); }
-        tbody td { padding: 0.85rem 1rem; }
-        tbody td.id-cell { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); }
+
+        .header-filters {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-filters select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .search-bar {
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            width: 250px;
+            font-size: 14px;
+            margin-right: -35px;
+            padding-right: 35px;
+        }
+
+        .search-btn {
+            position: relative;
+            background-color: #ffffff00;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .header-filters select:hover {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            background-color: #f5f5f5;
+        }
+
+        .table-container {
+            width: 100%;
+            border: 2px solid black;
+            border-top: none;
+            border-radius: 0px 0px 12px 12px;
+            overflow-x: auto;
+            background-color: white;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
+
+        thead tr {
+            background-color: #f5f5f5;
+            border-bottom: 2px solid #000;
+        }
+
+        .id-cell {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        td img {
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
         /* BADGES */
-        .badge { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 20px; font-size: 0.73rem; font-weight: 500; }
-        .badge-male   { background: #dbeafe; color: #1e40af; }
-        .badge-female { background: #fce7f3; color: #9d174d; }
-        .badge-grade  { background: var(--accent-light); color: var(--accent); }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            font-size: 0.73rem;
+            font-weight: 500;
+        }
 
-        /* MODAL OVERLAY */
+        .badge-male {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-female {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .badge-grade {
+            background: #e8f5e9;
+            color: rgb(10, 89, 52);
+        }
+
+        /* Modal Styles */
         .modal-overlay {
+            z-index: 1000;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-items: center;
+            align-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
             visibility: hidden;
             opacity: 0;
             pointer-events: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(10,8,5,0.55);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
         }
+
         .modal-overlay.open {
             visibility: visible;
             opacity: 1;
             pointer-events: all;
         }
 
-        /* MODAL BOX */
         .modal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            width: 100%;
-            max-width: 860px;
-            max-height: 90vh;
-            overflow: hidden;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 15px;
+        }
+
+        .modal-header-left {
             display: flex;
             flex-direction: column;
-            box-shadow: var(--shadow-lg);
+            gap: 0.2rem;
         }
 
-        /* MODAL HEADER */
-        .modal-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--gradient);
-            color: #fff;
-            flex-shrink: 0;
+        .modal-title {
+            font-weight: bold;
+            font-size: 22px;
+            color: #333;
         }
-        .modal-header-left { display: flex; flex-direction: column; gap: 0.2rem; }
-        .modal-title { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.02em; }
-        .modal-subtitle { font-size: 0.75rem; opacity: 0.6; font-family: 'DM Mono', monospace; }
+
+        .modal-subtitle {
+            font-size: 0.75rem;
+            color: #888;
+            font-family: monospace;
+        }
+
         .modal-close {
-            background: rgba(255,255,255,0.12);
+            background-color: #f44336;
+            color: white;
             border: none;
-            color: #fff;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
+            padding: 8px 15px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
         }
-        .modal-close:hover { background: rgba(255,255,255,0.22); }
 
-        /* MODAL BODY */
+        .modal-close:hover {
+            background-color: #da190b;
+        }
+
         .modal-body {
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 0;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
         }
 
-        /* SECTION LABEL */
-        .section-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .student-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
         }
-        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        /* INFO TABLES INSIDE MODAL */
-        .info-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-        .info-table tr { border-bottom: 1px solid var(--border); }
-        .info-table tr:last-child { border-bottom: none; }
-        .info-table th { background: #f1f1f1; text-align: left; padding: 0.6rem 0.9rem; font-size: 0.75rem; font-weight: 500; color: var(--muted); width: 38%; vertical-align: top; }
-        .info-table td { padding: 0.6rem 0.9rem; color: var(--text); }
-        .mono { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); }
+        .student-info-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 8px;
+        }
+
+        .student-info-item {
+            flex: 1;
+        }
+
+        .student-info-label {
+            font-weight: bold;
+            color: #555;
+            font-size: 12px;
+        }
+
+        .student-info-value {
+            color: #333;
+            margin-top: 2px;
+        }
+
+        .records-section {
+            margin-top: 20px;
+        }
+
+        .records-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .section-label {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-record {
+            background-color: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        .modal-record-date {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .modal-record-text {
+            color: #333;
+            font-size: 13px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-view {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #45a049;
+        }
+
+        .btn-edit {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #0b7dda;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .info-table tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .info-table th {
+            background: #f1f1f1;
+            text-align: left;
+            padding: 0.6rem 0.9rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #555;
+            width: 38%;
+            vertical-align: top;
+        }
+
+        .info-table td {
+            padding: 0.6rem 0.9rem;
+            color: #333;
+        }
+
+        .mono {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .page-header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+        }
+
+        .page-header p {
+            font-size: 0.85rem;
+            color: #555;
+            margin-top: 0.25rem;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .table-wrapper {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -185,47 +430,65 @@
     <p>Click on any student row to view full details.</p>
 </div>
 
-<div class="table-wrapper">
-    <table>
-        <thead>
-            <tr>
-                <th>Applicant ID</th>
-                <th>Full Name</th>
-                <th>LRN</th>
-                <th>Grade Level</th>
-                <th>Sex</th>
-                <th>Date Enrolled</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-        include "../include/enroll.php";
+<div class="table-main">
+    <div class="table-header">
+        <div class="header-filters">
+            <select id="gradeFilter">
+                <option value="">All Grades</option>
+            </select>
+        </div>
+        <div class="search">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search by name...">
+            <button class="search-btn" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                </svg></button>
+        </div>
+    </div>
 
-        $sql = "SELECT * FROM pre_enroll_table";
-        $result = mysqli_query($conn, $sql);
-        $students = [];
+    <div class="table-container">
+        <table cellpadding="10" cellspacing="0" class="table" border="0">
+            <thead>
+                <tr>
+                    <th style="text-align: center; width: 15%;">Applicant ID</th>
+                    <th style="text-align: center; width: 30%;">Full Name</th>
+                    <th style="text-align: center; width: 12%;">LRN</th>
+                    <th style="text-align: center; width: 15%;">Grade Level</th>
+                    <th style="text-align: center; width: 12%;">Sex</th>
+                    <th style="text-align: center; width: 16%;">Date Enrolled</th>
+                </tr>
+            </thead>
+            <tbody id="studentTableBody">
+            <?php
+            include "../include/enroll.php";
 
-        if ($result && $result->num_rows > 0):
-            while ($row = $result->fetch_assoc()):
-                $id = $row['Applicant_id'];
-                $students[$id] = $row;
-                $fullName = htmlspecialchars($row['f_Name'] . ' ' . $row['m_Name'] . ' ' . $row['l_Name']);
-                $sexBadge = $row['sex'] === 'Male' ? 'badge-male' : 'badge-female';
-        ?>
-            <tr onclick="openModal('<?= htmlspecialchars($id, ENT_QUOTES) ?>')">
-                <td class="id-cell"><?= htmlspecialchars($id) ?></td>
-                <td><strong><?= $fullName ?></strong></td>
-                <td class="id-cell"><?= htmlspecialchars($row['lrn_id']) ?></td>
-                <td><span class="badge badge-grade"><?= htmlspecialchars($row['grade_lvl']) ?></span></td>
-                <td><span class="badge <?= $sexBadge ?>"><?= htmlspecialchars($row['sex']) ?></span></td>
-                <td><?= htmlspecialchars($row['pre_enroll_date']) ?></td>
-            </tr>
-        <?php
-            endwhile;
-        endif;
-        ?>
-        </tbody>
-    </table>
+            $sql = "SELECT * FROM pre_enroll_table";
+            $result = mysqli_query($conn, $sql);
+            $students = [];
+
+            if ($result && $result->num_rows > 0):
+                while ($row = $result->fetch_assoc()):
+                    $id = $row['Applicant_id'];
+                    $students[$id] = $row;
+                    $fullName = htmlspecialchars($row['f_Name'] . ' ' . $row['m_Name'] . ' ' . $row['l_Name']);
+                    $sexBadge = $row['sex'] === 'Male' ? 'badge-male' : 'badge-female';
+            ?>
+                <tr onclick="openModal('<?= htmlspecialchars($id, ENT_QUOTES) ?>')">
+                    <td class="id-cell"><?= htmlspecialchars($id) ?></td>
+                    <td style="text-transform: uppercase;"><strong><?= $fullName ?></strong></td>
+                    <td class="id-cell"><?= htmlspecialchars($row['lrn_id']) ?></td>
+                    <td><span class="badge badge-grade"><?= htmlspecialchars($row['grade_lvl']) ?></span></td>
+                    <td><span class="badge <?= $sexBadge ?>"><?= htmlspecialchars($row['sex']) ?></span></td>
+                    <td><?= htmlspecialchars($row['pre_enroll_date']) ?></td>
+                </tr>
+            <?php
+                endwhile;
+            else:
+                echo "<tr><td colspan='6' class='no-results'>No records found</td></tr>";
+            endif;
+            ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 </div><!-- end .main-content -->
