@@ -28,8 +28,7 @@
         }
 
         .sidebar-container {
-            position: relative;
-            margin-bottom: -10px;
+            flex-shrink: 0;
         }
 
         .container {
