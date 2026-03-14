@@ -488,6 +488,7 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
     </style>
 </head>
 

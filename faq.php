@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_report'])) {
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="js/bootstrap.bundle.min.js" />
     <link rel="icon" type="image/x-icon" href="Pics/Logos/Lagro_High_School_logo.png">
-    <title>Help Page | LHS AI Chat Bot</title>
+    <title>FAQ | LHS AI Chat Bot</title>
 </head>
 <style>
     * {
@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_report'])) {
     homework: {
         keywords: ['homework', 'assignment', 'project', 'due date', 'submit', 'late work'],
         responses: [
-            "Need help with homework? I can guide you through it step by step.",
+            "Need help with h  omework? I can guide you through it step by step.",
             "If you're unsure about an assignment, try checking your class portal or asking your teacher for clarification.",
             "Managing homework can be easier with a schedule. Would you like help organizing your tasks?"
         ]

@@ -36,7 +36,9 @@
         }
 
         .sidebar-container {
-            margin-bottom: -10px;
+            position: sticky;
+            left: 0;
+                        
         }
 
         main {

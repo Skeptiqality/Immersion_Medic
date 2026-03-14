@@ -237,6 +237,7 @@
                                     <option value="cough">Cough</option>
                                     <option value="headache">Headache</option>
                                     <option value="stomachache">Stomachache</option>
+                                    <option value="cancer">Cancer</option>
                                 </select>
                             </td>
                         </tr>
