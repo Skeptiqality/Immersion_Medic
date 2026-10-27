@@ -9,7 +9,7 @@ Members:
 - René Descartes
 - Yesnt
 - 👨
-- Yanz
+- Yani
 - Skep
 
 Batch 25-26
